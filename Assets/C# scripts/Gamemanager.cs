@@ -6,9 +6,13 @@ using TMPro;
 
 public class Gamemanager : MonoBehaviour
 {
-    public TextMeshProUGUI points;
+    [SerializeField]
+    private TextMeshProUGUI points;
 
-    public int currentPoints;
+    private int currentPoints;
+    private int clickIncome = 1;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,12 +22,28 @@ public class Gamemanager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        points.text = currentPoints.ToString();
-
+        handleTouchInputs();
     }
 
-    public void increasePoints()
+    private void handleTouchInputs()
     {
-        currentPoints += 1;
+        // Check if a touch is present
+        if (Input.touchCount > 0)
+        {
+            // Only update the Single Tap
+            if (Input.GetTouch(0).phase == TouchPhase.Began)
+            {
+                // Add points / do whatever you have to happen in Touch
+                increasePoints(clickIncome);
+                Debug.Log("Tapped Once");
+            }
+        }
+    }
+
+    // Increase points by an amount given in the params
+    public void increasePoints(int amountToIncrease)
+    {
+        currentPoints += amountToIncrease;
+        points.text = currentPoints.ToString();
     }
 }
